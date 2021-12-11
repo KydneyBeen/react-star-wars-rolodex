@@ -14,12 +14,16 @@ const fullList: Array<People> = [];
 const getPeopleFromBatch = (results: Batch): Array<People> => {
   const people: Array<People> = [];
   if (results && results.results) {
-    results.results.forEach((person: Person): void => {
-      const id: number = parseInt(person.url.match(/[0-9]+/g)[0]);
-      people.push({
-        id,
-        name: person.name,
-      });
+    const peopleArr: Array<Person> = results.results;
+    peopleArr.forEach((person: Person): void => {
+      if (person.url && person.name) {
+        const parsedUrl: RegExpMatchArray | null = person.url.match(/[0-9]+/g);
+        const id: number = parseInt(parsedUrl ? parsedUrl[0] : '0');
+        people.push({
+          id,
+          name: person.name,
+        });
+      }
     });
   }
   return people;
@@ -33,7 +37,7 @@ const getPeopleRecursively = async (query: string, apiResponse: EventEmitter): P
     apiResponse.emit('data', people);
     if (batch.next) {
       const nextPath = new URL(batch.next);
-      await getPeopleRecursively(nextPath.searchParams.get('page'), apiResponse);
+      await getPeopleRecursively(nextPath.searchParams.get('page') || '', apiResponse);
     } else {
       apiResponse.emit('end');
     }

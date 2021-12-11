@@ -8,17 +8,20 @@ dotenv.config({
   path: __dirname + '/../.env',
 });
 
-const getPersonDetail = async (pathPart: string): Promise<PersonDetail> => {
+const getPersonDetail = async (pathPart: string): Promise<PersonDetail | null> => {
   const person: Person = await apiRequest(Resource.people, pathPart);
   const personSpecies: Array<Species> = [];
   const personFilms: Array<Film> = [];
-  let personHomeworld: Planet;
+  let personHomeworld: Planet | null;
   if (person && person.species) {
     await Promise.all(
       person.species.map(async (species) => {
-        const id: string = species.match(/[0-9]+/g)[0];
-        const speciesObj: Species = await apiRequest(Resource.species, id);
-        personSpecies.push(speciesObj);
+        if (species && typeof species === 'string') {
+          const parsedUrl = species.match(/[0-9]+/g);
+          const id: string = parsedUrl ? parsedUrl[0] : '0';
+          const speciesObj: Species = await apiRequest(Resource.species, id);
+          personSpecies.push(speciesObj);
+        }
       }),
     );
   } else {
@@ -27,16 +30,20 @@ const getPersonDetail = async (pathPart: string): Promise<PersonDetail> => {
   if (person && person.films) {
     await Promise.all(
       person.films.map(async (film) => {
-        const id: string = film.match(/[0-9]+/g)[0];
-        const filmObj: Film = await apiRequest(Resource.films, id);
-        personFilms.push(filmObj);
+        if (film && typeof film === 'string') {
+          const parsedUrl = film.match(/[0-9]+/g);
+          const id: string = parsedUrl ? parsedUrl[0] : '0';
+          const filmObj: Film = await apiRequest(Resource.films, id);
+          personFilms.push(filmObj);
+        }
       }),
     );
   } else {
     return null;
   }
-  if (person && person.homeworld) {
-    const id: string = new String(person.homeworld).match(/[0-9]+/g)[0];
+  if (person && person.homeworld && typeof person.homeworld === 'string') {
+    const parsedUrl = person.homeworld.match(/[0-9]+/g);
+    const id: string = parsedUrl ? parsedUrl[0] : '0';
     const planetObj: Planet = await apiRequest(Resource.planets, id);
     personHomeworld = planetObj;
   } else {
@@ -54,7 +61,7 @@ const getPersonDetail = async (pathPart: string): Promise<PersonDetail> => {
 
 const onePerson = async (req: any, res: any, next: VoidFunction): Promise<void> => {
   const pathPart: string = req.params.person || '1';
-  const personDetail: PersonDetail = await getPersonDetail(pathPart);
+  const personDetail: PersonDetail | null = await getPersonDetail(pathPart);
   if (personDetail) {
     res.statusCode = 200;
     res.send(JSON.stringify(personDetail));
