@@ -1,5 +1,24 @@
 import { Gender } from './enums';
 
+export interface Batch {
+  count: number;
+  next?: string;
+  previous?: string;
+  results: Array<Person>;
+}
+
+export interface Film {
+  title: string;
+  director: string;
+  producer: string;
+  release_date: string;
+}
+
+export interface People {
+  id: number;
+  name: string;
+}
+
 export interface Person {
   name?: string;
   displayName?: string;
@@ -32,23 +51,4 @@ export interface Species {
   average_lifespan: string;
   classification: string;
   language: string;
-}
-
-export interface Film {
-  title: string;
-  director: string;
-  producer: string;
-  release_date: string;
-}
-
-export interface People {
-  id: number;
-  name: string;
-}
-
-export interface Batch {
-  count: number;
-  next?: string;
-  previous?: string;
-  results: Array<Person>;
 }

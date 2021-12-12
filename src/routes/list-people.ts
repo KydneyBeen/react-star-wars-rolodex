@@ -1,8 +1,8 @@
 import * as dotenv from 'dotenv';
 import { apiRequest } from './utils/apiRequest';
 import { EventEmitter } from 'events';
-import { Batch, People, Person } from './utils/types';
-import { Resource } from './utils/enums';
+import { Batch, People, Person } from '../utils/types';
+import { Resource } from '../utils/enums';
 
 dotenv.config({
   path: __dirname + '/../../.env',
@@ -62,6 +62,14 @@ const listPeople = async (req: any, res: any): Promise<void> => {
     });
     apiResponse.on('end', () => {
       res.statusCode = 200;
+      fullList.sort((a:People, b:People) => {
+        if (a.name > b.name) {
+          return 1;
+        }
+        else {
+          return -1;
+        }
+      })
       res.send(JSON.stringify(fullList));
     });
     await getPeopleRecursively('', apiResponse);

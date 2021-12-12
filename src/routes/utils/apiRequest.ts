@@ -1,16 +1,16 @@
 import * as https from 'https';
 import * as dotenv from 'dotenv';
-import { Resource } from './enums';
+import { Resource } from '../../utils/enums';
 
 dotenv.config({
   path: __dirname + '/../../.env',
 });
 
-const apiRequest = (resouce: Resource, pathPart: string): Promise<any> => {
+const apiRequest = (resource: Resource, pathPart: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     const options: https.RequestOptions = {
       hostname: process.env.APIHOST,
-      path: `${process.env.APIPATH}/${resouce}/${pathPart}`,
+      path: `${process.env.APIPATH}/${resource}/${pathPart}`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -22,10 +22,16 @@ const apiRequest = (resouce: Resource, pathPart: string): Promise<any> => {
         results += chunk;
       });
       response.on('end', () => {
-        resolve(JSON.parse(results));
+        if (response.statusCode === 200) {
+          resolve(JSON.parse(results));
+        }
+        else {
+          resolve(null);
+        }
       });
     });
     request.on('error', (err: Error) => {
+      console.error(err);
       resolve(null);
     });
     request.end();

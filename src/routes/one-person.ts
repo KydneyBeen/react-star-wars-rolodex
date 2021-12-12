@@ -1,14 +1,19 @@
 import * as dotenv from 'dotenv';
 import { apiRequest } from './utils/apiRequest';
-import { Film, Person, PersonDetail, Planet, Species } from './utils/types';
-import { Resource } from './utils/enums';
-import { PersonResult } from './utils/classes';
+import { Film, Person, PersonDetail, Planet, Species } from '../utils/types';
+import { Resource } from '../utils/enums';
+import { PersonResult } from '../utils/classes';
 
 dotenv.config({
   path: __dirname + '/../.env',
 });
 
+const peopleCache:{[key:string]:PersonDetail} = {};
+
 const getPersonDetail = async (pathPart: string): Promise<PersonDetail | null> => {
+  if (peopleCache[pathPart]) {
+    return peopleCache[pathPart];
+  }
   const person: Person = await apiRequest(Resource.people, pathPart);
   const personSpecies: Array<Species> = [];
   const personFilms: Array<Film> = [];
@@ -56,6 +61,7 @@ const getPersonDetail = async (pathPart: string): Promise<PersonDetail | null> =
     films: personFilms,
     homeworld: personHomeworld,
   });
+  peopleCache[pathPart] = personDetail;
   return personDetail;
 };
 

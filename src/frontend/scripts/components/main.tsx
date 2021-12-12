@@ -1,6 +1,10 @@
 // declare const React: typeof import('react');
 import * as React from 'react';
 import { Scroller, Loader, Modal, Search } from './component-imports';
+import { callApi } from '../utils/call-api';
+import constants from '../../../utils/constants';
+import { People } from '../../../utils/types';
+import language from '../../../utils/language';
 
 export class Main extends React.Component {
   state:any = {
@@ -16,69 +20,91 @@ export class Main extends React.Component {
     this.getUserList();
   }
 
-  getUserList = () => {
+  getUserList = ():void => {
     if (!this.state.loading) {
       this.setState({loading:true})
     }
-    const request:XMLHttpRequest = new XMLHttpRequest();
-    request.addEventListener('load', () => {
-        const resultList = JSON.parse(request.response);
-        this.setState({
-          userList: resultList,
-          loading: false
-        });
+    callApi(constants.api_list, (result:string):void => {
+      const resultList:Array<People> = JSON.parse(result);
+      this.setState({
+        userList: resultList,
+        loading: false
+      });
     })
-    request.open('GET', '/list')
-    request.send();
   }
 
   getUserDetail = (id:string) => {
+    const path:string = `${constants.api_person}/${id}`
     if (!this.state.loading) {
       this.setState({loading:true})
     }
-    const request:XMLHttpRequest = new XMLHttpRequest();
-    request.addEventListener('load', () => {
-        this.setState({
-          userDetail: request.response,
-          loading: false
-        });
-    })
-    request.open('GET', `/person/${id}`)
-    request.send();
+    callApi(path, (result:string):void => {
+      this.setState({
+        userDetail: result,
+        loading:false
+      })
+    });
   }
 
-  openModal = (id) => {
+  openModal = (id):void => {
     this.getUserDetail(id);
   }
 
-  searchById = (event) => {
-    const search = event.target.value;
-    if (event.type !== "keyup" || (event.type === "keyup" && event.key === "Enter")) {
+  searchById = (event:React.KeyboardEvent<HTMLInputElement>|React.FocusEvent<HTMLInputElement>):void => {
+    const search:string = event.currentTarget.value;
+    if (event.type !== "keyup" || (event.type === "keyup" && event['key'] === "Enter")) {
       if (/^[0-9]+$/gm.test(search)) {
         this.openModal(search);
       }
-      event.target.value = '';
+      event.currentTarget.value = '';
     }
   }
 
-  closeModal = () => {
+  closeModal = ():void => {
     this.setState({
       userDetail: null
     })
   }
 
   render () {
+    const loader = (loading:boolean):JSX.Element => {
+      if (loading) {
+        return <Loader />;
+      }
+      else {
+        return;
+      }
+    }
+    const scroller = (userList:Array<People>):JSX.Element => {
+      if (userList && userList.length > 0) {
+        return <Scroller 
+          userList={userList}
+          openModal={(id) => this.openModal(id)}
+        />
+      }
+      else {
+        return;
+      }
+    }
+    const modal = (userDetail:string):JSX.Element => {
+      if (userDetail) {
+        return <Modal
+          userDetail={userDetail}
+          closeModal={this.closeModal}
+        />
+      }
+      else {
+        return;
+      }
+    }
     return (
       <div>
-        <h1>Characters of Star Wars</h1>
-        <p>Click on a character name to view information about them, or search by their ID number in the search box in the bottom-right corner</p>
-        {this.state.loading ?
-         <Loader /> : 
-         <Scroller userList={this.state.userList} openModal={(id) => this.openModal(id)} /> }
-         {this.state.userDetail ?
-         <Modal userDetail={this.state.userDetail} closeModal={this.closeModal}  /> :
-         ''}
-         <Search searchById={(event) => this.searchById(event)}/>
+        <h1>{language.site_title}</h1>
+        <p>{language.site_subtitle}</p>
+        {loader(this.state.loading)}
+        {scroller(this.state.userList)}
+        {modal(this.state.userDetail)}
+        <Search searchById={(event:React.KeyboardEvent<HTMLInputElement>|React.FocusEvent<HTMLInputElement>) => this.searchById(event)}/>
       </div>
     )
   }

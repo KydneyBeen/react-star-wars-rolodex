@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { ScrollerPerson } from './component-imports';
+import { People } from '../../../utils/types';
 
-export function Scroller (props) {
+interface Props {
+  userList:Array<People>;
+  openModal:Function;
+}
+
+export function Scroller (props:Props):JSX.Element {
 
   return (
     <div className="scroller-container">

@@ -1,47 +1,61 @@
 import * as React from 'react';
+import constants from '../../../utils/constants';
+import language from '../../../utils/language';
+import { Film, PersonDetail, Species } from '../../../utils/types';
 import { ModalSection } from './modal-section';
 
-export function Modal (props) {
-  const userDetail = JSON.parse(props.userDetail);
+interface Props {
+  userDetail:string;
+  closeModal:Function;
+}
+
+export function Modal (props:Props):JSX.Element {
+  const userDetail:PersonDetail = JSON.parse(props.userDetail);
   const sections = [
     {
-      title: "Physical",
+      title: language.title_section_personal,
       attributes: [
-        { key: 'Gender', value: userDetail.gender },
-        { key: 'Birth Year', value: userDetail.birth_year },
-        { key: 'Hair Color', value: userDetail.hair_color },
-        { key: 'Skin Color', value: userDetail.skin_color },
-        { key: 'Height', value: userDetail.height + 'cm' },
-        { key: 'Mass', value: userDetail.mass + 'kg' }
+        [
+          { key: language.label_gender, value: userDetail.gender },
+          { key: language.label_birth, value: userDetail.birth_year },
+          { key: language.label_hair, value: userDetail.hair_color },
+          { key: language.label_skin, value: userDetail.skin_color },
+          { key: language.label_height, value: userDetail.height + language.snippet_cm },
+          { key: language.label_mass, value: userDetail.mass + language.snippet_kg }
+        ]
       ]
     },
     {
-      title: "Species",
+      title: language.title_section_species,
       attributes: [
-        ...userDetail.species.map((species) => {
-          return {value: [
-            { key: "Name", value: species.name},
-            { key: "Language", value: species.language },
-            { key: "Classification", value: species.classification },
-            { key: "Average Lifespan", value: species.average_lifespan },
-          ]}
+        ...userDetail.species.map((species:Species) => {
+          return [
+            { key: language.label_species, value: species.name},
+            { key: language.label_lang, value: species.language },
+            { key: language.label_class, value: species.classification },
+            { key: language.label_lifespan, value: species.average_lifespan },
+          ]
         })
       ]
     },
     {
-      title: "Home world",
+      title: language.title_section_planet,
       attributes: [
-        { key: 'Name', value: userDetail.homeworld.name },
-        { key: 'Population', value: userDetail.homeworld.population },
-        { key: 'Terrain', value: userDetail.homeworld.terrain },
+        [
+          { key: language.label_planet, value: userDetail.homeworld.name },
+          { key: language.label_population, value: userDetail.homeworld.population },
+          { key: language.label_terrain, value: userDetail.homeworld.terrain }
+        ]
       ]
     },
     {
-      title: "As seen in",
+      title: language.title_section_films,
       attributes: [
-        ...userDetail.films.map((film) => {
+        userDetail.films.map((film:Film) => {
+          const year:string = film.release_date.match(constants.year_pattern)[0];
           return {
-            value: <span><strong>{film.title}</strong> ({film.release_date}) directed by {film.director} and produced by {film.producer}</span>
+            key: `${film.title} (${year})`,
+            value: language.content_film(film.director, film.producer)
           }
         })
       ]
@@ -60,7 +74,7 @@ export function Modal (props) {
             })}
           </div>
           <div className="modal-footer">
-            <button onClick={() => props.closeModal()}>Close</button>
+            <button onClick={() => props.closeModal()}>{language.button_close}</button>
           </div>
         </div>
       </div>

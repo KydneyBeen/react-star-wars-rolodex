@@ -1,8 +1,14 @@
 import * as React from 'react';
+import { People } from '../../../utils/types';
 
-export function ScrollerPerson (props) {
+interface Props {
+  openModal:Function;
+  user:People;
+}
+
+export function ScrollerPerson (props:Props):JSX.Element {
   return (
-    <li className="list-group-item person" id={props.user.id}>
+    <li className="list-group-item person" id={'' + props.user.id}>
       <a onClick={() => props.openModal(props.user.id)}>{props.user.name}</a>
     </li>
   )
