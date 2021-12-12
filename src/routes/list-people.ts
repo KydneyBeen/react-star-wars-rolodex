@@ -18,7 +18,7 @@ const getPeopleFromBatch = (results: Batch): Array<People> => {
     peopleArr.forEach((person: Person): void => {
       if (person.url && person.name) {
         const parsedUrl: RegExpMatchArray | null = person.url.match(/[0-9]+/g);
-        const id: number = parseInt(parsedUrl ? parsedUrl[0] : '0');
+        const id: number = parseInt(parsedUrl ? parsedUrl[parsedUrl.length - 1] : '0');
         people.push({
           id,
           name: person.name,
