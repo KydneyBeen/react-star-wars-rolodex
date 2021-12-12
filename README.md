@@ -32,14 +32,6 @@ cd react-star-wars-rolodex
 npm install
 ```
 
-```bash
-touch .env
-```
-
-```bash
-npm run env
-```
-
 In the current directory, find the file `.env` and fill this info:
 
 **Port:** 8082 (Or any available port of your choice)
