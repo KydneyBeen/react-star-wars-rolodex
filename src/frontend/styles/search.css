@@ -1,0 +1,53 @@
+#search {
+  position: absolute;
+  bottom: 60px;
+  right: 60px;
+  display: inline-block;
+  padding: 5px 10px;
+}
+
+#search input {
+  color: #212529;
+  background-color: #f7efee;
+  border-radius: 25px;
+  border: none;
+  font-size: 24px;
+  height: 50px;
+  width:50px;
+  font-weight:bold;
+  padding: 18px;
+  scrollbar-width: none;
+  scroll-margin: 10px;
+}
+
+#search input:focus {
+  width: 200px;
+  border-radius: 3px;
+  font-weight: 400;
+}
+
+#search input::placeholder {
+  opacity: 1;
+}
+
+#search input:focus::placeholder {
+  position: relative;
+  text-align: end;
+  left: -40px;
+}
+
+#search input::-webkit-scrollbar {
+  display:none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+#search input::-webkit-outer-spin-button,
+#search input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+#search input[type=number] {
+  -moz-appearance: textfield;
+}

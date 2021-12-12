@@ -1,12 +1,14 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "es6",
     "module": "commonjs",
-    "outDir": "./dist",
-    "sourceMap": true,
-    "experimentalDecorators": true,
+    "target": "es6",
+    "lib": ["es6", "dom"],
     "allowJs": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "types": ["node"],
+    "sourceMap": false
   },
   "include": [
     "./src/**/*.ts"

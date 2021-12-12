@@ -23,8 +23,8 @@ export class PersonResult {
   skin_color: PersonDetail['skin_color'];
   gender: PersonDetail['gender'];
   homeworld: PersonDetail['homeworld'];
-  films: PersonDetail['films'];
-  species: PersonDetail['species'];
+  films: PersonDetail['films'] = [];
+  species: PersonDetail['species'] = [];
 
   constructor(results: PersonDetail) {
     this.name = results.name;
@@ -35,11 +35,17 @@ export class PersonResult {
     this.skin_color = results.skin_color;
     this.gender = results.gender;
     this.homeworld = new PlanetResult(results.homeworld);
-    this.films = results.films.map((film) => {
-      return new FilmResult(film);
+    results.species.forEach((species) => {
+      if (species) {
+        const speciesResult = new SpeciesResult(species);
+        this.species.push(speciesResult)
+      }
     });
-    this.species = results.species.map((species) => {
-      return new SpeciesResult(species);
+    results.films.forEach((film) => {
+      if (film) {
+        const filmResult = new FilmResult(film);
+        this.films.push(filmResult)
+      }
     });
   }
 }

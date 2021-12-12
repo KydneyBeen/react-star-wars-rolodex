@@ -9,7 +9,7 @@
     "plugin:prettier/recommended"
   ],
   "ignorePatterns": [
-    "/dist/*"
+    "dist/*"
   ],
   "rules": {
     

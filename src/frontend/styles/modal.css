@@ -1,0 +1,28 @@
+.user-modal {
+  background: #f7efee;
+  border-radius: 3px;
+  box-shadow: 0px 3px 5px #666666;
+  text-align: left;
+  font-family: monospace;
+  z-index: 1;
+}
+
+.user-modal h1 {
+  font-size: 24px;
+  text-align: center;
+}
+
+.user-modal p {
+  margin-bottom: 0.2rem;
+}
+
+.user-modal .section {
+  display: inline-block;
+  width: 45%;
+  border-radius: 5px;
+  text-align: left;
+  padding: 10px;
+  text-transform: uppercase;
+  min-width: 250px;
+  vertical-align: text-top;
+}
