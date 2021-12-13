@@ -1,6 +1,9 @@
 import * as React from 'react';
 import language from '../../../utils/language';
 
+/*
+* The Search input box in the bottom corner of the page
+*/
 export function Search (props: { ['searchById']:Function }):JSX.Element {
   return (
     <div id="search">

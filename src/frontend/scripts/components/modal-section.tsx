@@ -11,6 +11,9 @@ interface Props {
   attributes: Array<Array<KeyValue>>;
 }
 
+/*
+* Each block of modal content
+*/
 export function ModalSection (props:Props):JSX.Element {
   const keyvalue = (param:KeyValue):JSX.Element => {
     return (

@@ -1,3 +1,6 @@
+/*
+*  The source of any static textual content within the app
+*/
 export default {
   button_close: 'Close',
   content_film: (directors:string,producers:string) => `directed by ${directors} and produced by ${producers}`,

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { listPeople, onePerson } from '../routes/exports';
+import { listPeople, onePerson } from './routes/exports';
 
 const router = Router();
 

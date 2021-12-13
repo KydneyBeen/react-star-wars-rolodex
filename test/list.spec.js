@@ -1,11 +1,10 @@
 const request = require('supertest');
 const server = require('../dist/server.js');
-const darthVaderId = "4";
+const darthVaderId = '4';
 
 describe('GET /person/4', () => {
-  it('should return details of Darth Vader', async() => {
-    const res = await request(server.app)
-    .get(`/person/${darthVaderId}`);
+  it('should return details of Darth Vader', async () => {
+    const res = await request(server.app).get(`/person/${darthVaderId}`);
     const body = JSON.parse(res.text);
     expect(res.statusCode).toEqual(200);
     expect(body).toHaveProperty('name');
@@ -37,7 +36,7 @@ describe('GET /person/4', () => {
       expect(typeof film.producer).toEqual('string');
       expect(film).toHaveProperty('director');
       expect(typeof film.director).toEqual('string');
-    })
+    });
     expect(body).toHaveProperty('species');
     expect(body.species.length).toBeGreaterThanOrEqual(0);
     body.species.forEach((species) => {
@@ -49,6 +48,6 @@ describe('GET /person/4', () => {
       expect(typeof species.classification).toEqual('string');
       expect(species).toHaveProperty('language');
       expect(typeof species.language).toEqual('string');
-    })
-  })
+    });
+  });
 });

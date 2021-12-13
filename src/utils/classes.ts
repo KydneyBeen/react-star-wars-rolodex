@@ -1,5 +1,6 @@
 import { Film, PersonDetail, Planet, Species } from './types';
 
+// Generates a Film object from the swapi api response
 export class FilmResult {
   title: string;
   director: string;
@@ -14,6 +15,7 @@ export class FilmResult {
   }
 }
 
+// Generates a PersonDetail object from the swapi api response
 export class PersonResult {
   name: PersonDetail['name'];
   birth_year: PersonDetail['birth_year'];
@@ -38,18 +40,19 @@ export class PersonResult {
     results.species.forEach((species) => {
       if (species) {
         const speciesResult = new SpeciesResult(species);
-        this.species.push(speciesResult)
+        this.species.push(speciesResult);
       }
     });
     results.films.forEach((film) => {
       if (film) {
         const filmResult = new FilmResult(film);
-        this.films.push(filmResult)
+        this.films.push(filmResult);
       }
     });
   }
 }
 
+// Generates a Planet object from the swapi api response
 export class PlanetResult {
   name: string;
   terrain: string;
@@ -62,6 +65,7 @@ export class PlanetResult {
   }
 }
 
+// Generates a Species object from the swapi api response
 export class SpeciesResult {
   name: string;
   average_lifespan: string;

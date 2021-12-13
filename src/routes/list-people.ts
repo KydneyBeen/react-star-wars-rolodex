@@ -8,9 +8,10 @@ dotenv.config({
   path: __dirname + '/../../.env',
 });
 
-// global variable to store list in memory after first load
+// global variable to cache list in memory after first load
 const fullList: Array<People> = [];
 
+// generates an array of people from swapi api results
 const getPeopleFromBatch = (results: Batch): Array<People> => {
   const people: Array<People> = [];
   if (results && results.results) {
@@ -29,6 +30,8 @@ const getPeopleFromBatch = (results: Batch): Array<People> => {
   return people;
 };
 
+// gets a list of people from the swapi api and returns them via event emitter
+// the swapi api paginates this list, so this function recursively gets all pages
 const getPeopleRecursively = async (query: string, apiResponse: EventEmitter): Promise<void> => {
   const pathPart: string = query === '' ? query : '?page=' + query;
   const batch: Batch = await apiRequest(Resource.people, pathPart);
@@ -46,6 +49,7 @@ const getPeopleRecursively = async (query: string, apiResponse: EventEmitter): P
   }
 };
 
+// enpoint /list
 const listPeople = async (req: any, res: any): Promise<void> => {
   if (fullList && fullList.length >= 1) {
     res.statusCode = 200;
@@ -62,14 +66,13 @@ const listPeople = async (req: any, res: any): Promise<void> => {
     });
     apiResponse.on('end', () => {
       res.statusCode = 200;
-      fullList.sort((a:People, b:People) => {
+      fullList.sort((a: People, b: People) => {
         if (a.name > b.name) {
           return 1;
-        }
-        else {
+        } else {
           return -1;
         }
-      })
+      });
       res.send(JSON.stringify(fullList));
     });
     await getPeopleRecursively('', apiResponse);

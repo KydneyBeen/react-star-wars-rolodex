@@ -9,6 +9,9 @@ interface Props {
   closeModal:Function;
 }
 
+/*
+* The Modal containing the person details (Each group of details is a child component)
+*/
 export function Modal (props:Props):JSX.Element {
   const userDetail:PersonDetail = JSON.parse(props.userDetail);
   const sections = [
