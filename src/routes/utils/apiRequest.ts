@@ -6,6 +6,7 @@ dotenv.config({
   path: __dirname + '/../../.env',
 });
 
+// calls swapi api and returns the raw results
 const apiRequest = (resource: Resource, pathPart: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     const options: https.RequestOptions = {
@@ -24,8 +25,7 @@ const apiRequest = (resource: Resource, pathPart: string): Promise<any> => {
       response.on('end', () => {
         if (response.statusCode === 200) {
           resolve(JSON.parse(results));
-        }
-        else {
+        } else {
           resolve(null);
         }
       });

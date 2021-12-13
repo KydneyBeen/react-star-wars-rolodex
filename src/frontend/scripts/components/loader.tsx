@@ -1,6 +1,9 @@
 import * as React from 'react';
 import language from '../../../utils/language';
 
+/*
+* The Loading overlay
+*/
 export function Loader ():JSX.Element {
   return (
     <div className="backer">

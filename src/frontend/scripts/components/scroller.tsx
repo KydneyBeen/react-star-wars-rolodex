@@ -7,6 +7,9 @@ interface Props {
   openModal:Function;
 }
 
+/*
+* The Container for the list of person names
+*/
 export function Scroller (props:Props):JSX.Element {
 
   return (

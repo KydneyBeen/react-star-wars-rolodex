@@ -1,3 +1,4 @@
+// constants used by multiple files
 export default {
   api_list: '/list',
   api_person: '/person',

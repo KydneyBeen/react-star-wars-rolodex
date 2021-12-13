@@ -8,8 +8,10 @@ dotenv.config({
   path: __dirname + '/../.env',
 });
 
-const peopleCache:{[key:string]:PersonDetail} = {};
+// global variable to cache responses in memory
+const peopleCache: { [key: string]: PersonDetail } = {};
 
+// gets a PersonDetail object from the swapi api
 const getPersonDetail = async (pathPart: string): Promise<PersonDetail | null> => {
   if (peopleCache[pathPart]) {
     return peopleCache[pathPart];
@@ -65,6 +67,7 @@ const getPersonDetail = async (pathPart: string): Promise<PersonDetail | null> =
   return personDetail;
 };
 
+// endpoint /person/:person
 const onePerson = async (req: any, res: any, next: VoidFunction): Promise<void> => {
   const pathPart: string = req.params.person || '1';
   const personDetail: PersonDetail | null = await getPersonDetail(pathPart);

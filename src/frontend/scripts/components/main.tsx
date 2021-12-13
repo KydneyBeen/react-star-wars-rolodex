@@ -6,6 +6,9 @@ import constants from '../../../utils/constants';
 import { People } from '../../../utils/types';
 import language from '../../../utils/language';
 
+/*
+* The root component of the index page
+*/
 export class Main extends React.Component {
   state:any = {
     userList:[],
